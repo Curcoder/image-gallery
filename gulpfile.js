@@ -1,6 +1,7 @@
 const gulp = require('gulp');
 const sass = require('gulp-sass');
 const prefix = require('gulp-autoprefixer');
+const imagemin = require('gulp-imagemin');
 
 // Copy all HTML files to build folder
 gulp.task('copyHTML', () => {
@@ -24,9 +25,17 @@ gulp.task('sass', () => {
     .pipe(gulp.dest('src/css'))
 });
 
+// Copies and minifies images
+gulp.task('compyImages', () =>
+    gulp.src('src/images/*')
+        .pipe(imagemin())
+        .pipe(gulp.dest('build/images'))
+);
+
 // Watch for and update all changes
 gulp.task('watch', () => {
   gulp.watch('src/sass/**/*.sass', ['sass']);
   gulp.watch('src/*.html', ['copyHTML']);
   gulp.watch('src/scripts/**/*.js', ['copyJS']);
+  gulp.watch('src/images/*', ['compyImages']);
 });
